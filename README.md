@@ -25,5 +25,3 @@ Local file locations and names of the files are stored in a cache and used for s
   It should look like this:
   ![Preview](https://github.com/aeneasw/Fusion-local-files/blob/main/fusionExample.png?raw=true)
 
-
-![Preview](https://github.com/aeneasw/Fusion-local-files/blob/main/Preview.png?raw=true)
