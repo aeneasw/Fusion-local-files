@@ -1,0 +1,5 @@
+{
+	"python.autoComplete.extraPaths":	["/Users/aeneas/Library/Application Support/Autodesk/Autodesk Fusion 360/API/Python/defs"],
+	"python.analysis.extraPaths":	["/Users/aeneas/Library/Application Support/Autodesk/Autodesk Fusion 360/API/Python/defs"],
+	"python.defaultInterpreterPath":	"/Users/aeneas/Library/Application Support/Autodesk/webdeploy/production/66fca321b6498e6b4fc9adcaae26d2ac05947169/Autodesk Fusion 360.app/Contents/Frameworks/Python.framework/Versions/Current/bin/python"
+}
