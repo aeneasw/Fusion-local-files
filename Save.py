@@ -23,7 +23,6 @@ def application_documentOpened(args: adsk.core.DocumentEventArgs):
     file["path"] = documentFilePath
     files[app.activeDocument.creationId] = file
 
-
 ### Save Menu
 def addSaveMenuOption():
     cmdDef = ui.commandDefinitions.itemById(CMD_ID)
@@ -51,36 +50,45 @@ def addSaveMenuOption():
     control = fileDropDown.controls.addCommand(cmdDef, 'ExportCommand', True)
 
 
+def saveAs():      
+    filedlg = ui.createFileDialog()
+    filedlg.initialDirectory = '~'
+    filedlg.filter = '*.f3d'
+    if filedlg.showSave() == adsk.core.DialogResults.DialogOK:
+        design = adsk.fusion.Design.cast(app.activeProduct)
+        option = design.exportManager.createFusionArchiveExportOptions(filedlg.filename, design.rootComponent)
+        design.exportManager.execute(option)
+        
+        ui.messageBox('Saved in: \n"' + filedlg.filename + '"', 'Saved!')
+        
+        file = {}
+        file["name"] = filedlg.filename.split('/').pop()
+        file["path"] = filedlg.filename
+        files[app.activeDocument.creationId] = file
+        app.activeDocument.name = file["name"].split(".f3d")[0]  
+
 class saveFile(adsk.core.CommandCreatedEventHandler):
     def __init__(self):
-        super().__init__()
+        super().__init__()  
+    
     def notify(self, eventArgs: adsk.core.CommandCreatedEventArgs) -> None:
         if app.activeDocument.creationId in files:
             
             file = files[app.activeDocument.creationId]
             
-            design = adsk.fusion.Design.cast(app.activeProduct)
-            option = design.exportManager.createFusionArchiveExportOptions(file["path"], design.rootComponent)
-            design.exportManager.execute(option)
-            
-            ui.messageBox('Gespeichert unter: \n"' + file["path"] + '"', 'Gespeichert!')
-            
-        else:            
-            filedlg = ui.createFileDialog()
-            filedlg.initialDirectory = '~'
-            filedlg.filter = '*.f3d'
-            if filedlg.showSave() == adsk.core.DialogResults.DialogOK:
+            resp = ui.messageBox('Overwrite: \n"' + file["path"] + '"', 'Overwrite?', adsk.core.MessageBoxButtonTypes.OKCancelButtonType)  
+            if resp == 0:
                 design = adsk.fusion.Design.cast(app.activeProduct)
-                option = design.exportManager.createFusionArchiveExportOptions(filedlg.filename, design.rootComponent)
+                option = design.exportManager.createFusionArchiveExportOptions(file["path"], design.rootComponent)
                 design.exportManager.execute(option)
                 
-                ui.messageBox('Gespeichert unter: \n"' + filedlg.filename + '"', 'Gespeichert!')
+                ui.messageBox('Saved in: \n"' + file["path"] + '"', 'Saved!')
+            else:
+                saveAs()
+        else:            
+            saveAs()
                 
-                file = {}
-                file["name"] = filedlg.filename.split('/').pop()
-                file["path"] = filedlg.filename
-                files[app.activeDocument.creationId] = file
-                app.activeDocument.name = file["name"].split(".f3d")[0]           
+                
 
 ### OPEN MENU
 def addOpenMenuOption():
