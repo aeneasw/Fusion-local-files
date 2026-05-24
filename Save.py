@@ -1,4 +1,4 @@
-import adsk, adsk.core, adsk.fusion, adsk.cam, traceback, Document
+import adsk, adsk.core, adsk.fusion
 from .lib import fusion360utils as futil
 from pprint import pprint
 
@@ -26,6 +26,7 @@ def application_documentOpened(args: adsk.core.DocumentEventArgs):
 ### Save Menu
 def addSaveMenuOption():
     cmdDef = ui.commandDefinitions.itemById(CMD_ID)
+    
     
     if not cmdDef:
         cmdDef = ui.commandDefinitions.addButtonDefinition(CMD_ID, "Save on local drive", "", "resources_saveFile")
